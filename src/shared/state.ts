@@ -21,3 +21,17 @@ export const defaultState: AppState = {
 
   totalJourneyDays: 365,
 };
+
+let state: AppState = { ...defaultState };
+
+export function getState(): AppState {
+  return state;
+}
+
+export function setState(newState: AppState): void {
+  state = newState;
+}
+
+export function resetState(): void {
+  state = { ...defaultState };
+}
