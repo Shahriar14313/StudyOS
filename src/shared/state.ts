@@ -24,14 +24,30 @@ export const defaultState: AppState = {
 
 let state: AppState = { ...defaultState };
 
+type Listener = (state: AppState) => void;
+
+const listeners = new Set<Listener>();
+
 export function getState(): AppState {
   return state;
 }
 
 export function setState(newState: AppState): void {
   state = newState;
+
+  listeners.forEach((listener) => {
+    listener(state);
+  });
+}
+
+export function subscribe(listener: Listener): () => void {
+  listeners.add(listener);
+
+  return () => {
+    listeners.delete(listener);
+  };
 }
 
 export function resetState(): void {
-  state = { ...defaultState };
+  setState({ ...defaultState });
 }
